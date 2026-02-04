@@ -1,4 +1,5 @@
 # California Housing Price Prediction: A Model Comparison Study
+> 2 hour practical so did not go as deeply for SGD when it failed. Note the random forest output is only a winner in this surface level experimentation.
 
 ## Project Overview
 This project aimed to predict house prices using the Scikit-learn California Housing dataset while documenting the journey from basic linear models to more robust ensemble methods.
