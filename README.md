@@ -1,5 +1,38 @@
-# SGD_HousePrices
+# California Housing Price Prediction: A Model Comparison Study
 
-California Housing Price Prediction: SGD Regressor AnalysisProject OverviewThis project implements a Machine Learning pipeline to predict house prices in California using the Scikit-learn California Housing dataset (20,640 samples). The initial model uses a Stochastic Gradient Descent (SGD) Regressor, a linear approach optimized for large-scale datasets.Current ImplementationThe pipeline includes the following key stages:Data Partitioning: 80/20 Train-Test split.Feature Scaling: Application of StandardScaler to ensure features have a mean of 0 and variance of 1 (essential for gradient descent convergence).Modeling: Implementation of SGDRegressor with squared loss.Visualization: Comparison of actual vs. predicted prices with a \(y=x\) reference line.Key ObservationsPerformance Metrics:Mean Squared Error (MSE): 0.5506R² Score: 0.5798 (The model explains ~58% of the price variance).Error Analysis: The scatter plot shows a significant "cloud" of points around the identity line, indicating moderate prediction error (approx. $74,200 on average).Data Constraints: A visible horizontal "ceiling" at 5.0 ($500,000) indicates capped data values, which limits the model's accuracy for high-end luxury properties.Next Steps: Strategies for ImprovementTo move the \(R^{2}\) score closer to 1.0, we will execute two distinct strategies:Action 1: Complexity Enhancement (Stay with SGD)The current SGD model is purely linear, meaning it assumes that if a feature (like income) doubles, the price change is constant. In reality, housing data is complex and non-linear.The Plan: Introduce Polynomial Features (interaction terms).Goal: By transforming features into squares or combinations (e.g., \(Income\times Rooms\)), we allow the SGD model to "see" curves in the data, potentially capturing geographic "hotspots" or diminishing returns on house size.Action 2: Architectural Shift (Random Forest Regressor)Linear models often struggle with the California dataset because location (Latitude/Longitude) affects price in clusters, not straight lines.The Plan: Switch to a Random Forest Regressor, an ensemble of Decision Trees.Goal: Random Forests do not assume a linear relationship and are excellent at capturing non-linear patterns and interactions automatically. This usually results in a significantly higher \(R^{2}\) score (often > 0.80) for this specific dataset.
+## Project Overview
+This project aimed to predict house prices using the Scikit-learn California Housing dataset while documenting the journey from basic linear models to more robust ensemble methods.
+
+
+## Model Evolution, Challenges, and Results
+The analysis followed an iterative approach, revealing key insights into model stability and performance across different architectures.
+
+<img width="561" height="238" alt="image" src="https://github.com/user-attachments/assets/8d5161ba-538b-4340-a430-213055080918" />
+
+
+### Iteration 1: Baseline SGD Regressor
+- Action: Implemented a standard linear model after feature scaling.
+
+- Observation: Achieved a respectable (R^{2}) of 0.58, showing a foundational linear relationship between features and price.
+
+### Iteration 2: Polynomial SGD Regressor
+- Challenges: The introduction of 2nd-degree polynomial features led to numerical instability and divergence (extreme errors). The model initially returned a very negative (R^{2}).
+- Changes Implemented: Applied a much smaller learning_rate (eta0=0.0001) to stabilize the model's gradients.
+- Results & Analysis: While stable, performance decreased to (R^{2}=0.51).The Residual Plot (see notebook image) visually confirmed severe bias (systematic over/underestimation) and heteroskedasticity (errors widening for expensive houses), indicating the linear formula was a poor fit for the data's complexity.
+
+### Iteration 3: Random Forest Regressor
+- Action: Switched to a non-linear, ensemble-based model that doesn't rely on gradients.
+- Observation: This approach solved both the stability and bias problems immediately.
+- Result: Achieved a high-performance (R^{2}) of 0.81, nearly doubling the accuracy of the best SGD model. I noted complex, non-linear interactions (e.g., specific latitude/longitude combinations) are crucial for price prediction in this dataset.
+
+## Visual Summary
+The comparative plot below (available in the linked notebook) highlights how much tighter the Random Forest predictions (Green) are to the actual values compared to the linear models (Blue/Violet).
+
+## Further Tests and Future Work
+- Feature Engineering: Focus on combining Latitude and Longitude into a single, more meaningful geographic feature.
+- Hyperparameter Tuning: Use cross-validation and GridSearchCV on the Random Forest to try to reach an (R^{2}) of 0.85+
+- Alternative Models: Explore XGBoost or LightGBM, which often set state-of-the-art results for this kind of structured data.
+
+
 
 
